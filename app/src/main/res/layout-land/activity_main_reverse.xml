@@ -4,8 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginEnd="10dp"
-    android:layout_marginRight="10dp"
+    android:paddingEnd="10dp"
+    android:paddingRight="10dp"
+    android:paddingStart="10dp"
+    android:paddingLeft="10dp"
     tools:context="com.task.vasskob.customtab.MainActivity">
 
     <LinearLayout
@@ -20,27 +22,27 @@
         <ImageButton
             android:id="@+id/home"
             style="@style/button_landscape"
-            android:src="@drawable/ic_home"/>
+            android:src="@drawable/ic_home_selector"/>
 
         <ImageButton
             android:id="@+id/notification"
             style="@style/button_landscape"
-            android:src="@drawable/ic_notification"/>
+            android:src="@drawable/ic_notification_selector"/>
 
         <ImageButton
             android:id="@+id/camera"
             style="@style/button_landscape"
-            android:src="@drawable/ic_photo"/>
+            android:src="@drawable/ic_camera_selector"/>
 
         <ImageButton
             android:id="@+id/search"
             style="@style/button_landscape"
-            android:src="@drawable/ic_search_main"/>
+            android:src="@drawable/ic_find_selector"/>
 
         <ImageButton
             android:id="@+id/profile"
             style="@style/button_landscape"
-            android:src="@drawable/ic_user"/>
+            android:src="@drawable/ic_person_selector"/>
 
     </LinearLayout>
 

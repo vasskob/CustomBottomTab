@@ -1,5 +1,7 @@
 package com.task.vasskob.customtab;
 
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -18,16 +20,17 @@ public class MainActivity extends AppCompatActivity {
     private static final String ARG_CURRENT_POSITION = "ARG_CURRENT_POSITION";
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    int HOME_PAGE_POSITION             = 1;
-    int USER_ACTIVITY_PAGE_POSITION    = 2;
-    int CAMERA_PAGE_POSITION           = 3;
-    int SEARCH_PAGE_POSITION           = 4;
-    int PROFILE_PAGE_POSITION          = 5;
+    int HOME_PAGE_POSITION = 1;
+    int USER_ACTIVITY_PAGE_POSITION = 2;
+    int CAMERA_PAGE_POSITION = 3;
+    int SEARCH_PAGE_POSITION = 4;
+    int PROFILE_PAGE_POSITION = 5;
 
-    @Bind({ R.id.home, R.id.notification, R.id.camera, R.id.search, R.id.profile })
+    @Bind({R.id.home, R.id.notification, R.id.camera, R.id.search, R.id.profile})
     List<ImageButton> mTabs;
     static final ButterKnife.Setter<View, Boolean> SELECT = new ButterKnife.Setter<View, Boolean>() {
-        @Override public void set(View view, Boolean value, int index) {
+        @Override
+        public void set(View view, Boolean value, int index) {
             view.setSelected(value);
         }
     };
@@ -37,12 +40,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
-        lockScreenOrientation();
+        setContentView(R.layout.activity_main);
+
         ButterKnife.bind(this);
-        Log.d(TAG, "onCreate: currentPos: " + mCurrentPosition);
         if (savedInstanceState != null) {
-            Log.d(TAG, "onCreate: restore state " + savedInstanceState.getInt(ARG_CURRENT_POSITION) + " bundle: " + savedInstanceState);
             mCurrentPosition = savedInstanceState.getInt(ARG_CURRENT_POSITION, mCurrentPosition);
         } else {
             Log.d(TAG, "onCreate: savedInstanceState == null");
@@ -52,21 +53,18 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        Log.d(TAG, "onSaveInstanceState: pos: " + mCurrentPosition);
-        Log.d(TAG, "onSaveInstanceState: outState before : " + outState);
         outState.putInt(ARG_CURRENT_POSITION, mCurrentPosition);
-        Log.d(TAG, "onSaveInstanceState: outState save: " + outState);
         super.onSaveInstanceState(outState);
-        Log.d(TAG, "onSaveInstanceState: outState super: " + outState);
     }
-
 
     private void selectTab(int position) {
         ButterKnife.apply(mTabs, SELECT, false);
         mTabs.get(position - 1).setSelected(true);
+        mCurrentPosition = position;
+        Log.d(TAG, "selectTab: Tab selected  =  " + position);
     }
 
-    @OnClick({ R.id.home, R.id.notification, R.id.camera, R.id.search, R.id.profile })
+    @OnClick({R.id.home, R.id.notification, R.id.camera, R.id.search, R.id.profile})
     public void onTabClick(View view) {
         Log.d(TAG, "onTabClick: id: " + view.getId());
         selectTab(getTabPosition(view.getId()));
@@ -89,20 +87,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void lockScreenOrientation() {
-        switch (((WindowManager) getSystemService(WINDOW_SERVICE))
-                .getDefaultDisplay().getRotation()) {
-            case Surface.ROTATION_90:
-                setContentView(R.layout.activity_main);
-                break;
-            case Surface.ROTATION_180:
-                setContentView(R.layout.activity_main);
-                break;
-            case Surface.ROTATION_270:
-                setContentView(R.layout.activity_main_reverse);
-                break;
-            default :
-                setContentView(R.layout.activity_main);
+       @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        if (newConfig.orientation == ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE) {
+            setContentView(R.layout.activity_main_reverse);
+        } else {
+            setContentView(R.layout.activity_main);
         }
     }
 }
