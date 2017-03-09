@@ -40,7 +40,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        //    setContentView(R.layout.activity_main);
+        lockScreenOrientation();
 
         ButterKnife.bind(this);
         if (savedInstanceState != null) {
@@ -87,12 +88,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-       @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        if (newConfig.orientation == ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE) {
+    public void lockScreenOrientation() {
+        if (((WindowManager) getSystemService(WINDOW_SERVICE))
+                .getDefaultDisplay().getRotation() == Surface.ROTATION_270) {
             setContentView(R.layout.activity_main_reverse);
-        } else {
-            setContentView(R.layout.activity_main);
-        }
+        } else setContentView(R.layout.activity_main);
     }
 }
